@@ -12,4 +12,4 @@ __pycache__/
 Thumbs.db
 
 # Archivos de entorno (x si llego a usar claves, etc.)
-.env
+.env 
