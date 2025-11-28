@@ -1,0 +1,22 @@
+>valid_sequence_1
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+>sequence_with_invalid_chars
+ACGTXACGTYACGTZACGTACGTACGTACGTACGTACGTACGT
+>sequence_with_spaces
+ACGT ACGT ACGT ACGT ACGT ACGT ACGT ACGT ACGT
+>duplicate_header
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+>duplicate_header
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+>empty_sequence_header
+
+>very_short_sequence
+ACGT
+>sequence_with_mixed_case
+acgtacgtacgtACGTacgtacgtACGTacgtacgtACGTacgtacgt
+>sequence_with_tabs_and_newlines
+ACGTACGT
+	ACGTACGT
+ACGTACGT
+>high_gc_content
+GCGCGCGCGCGCGCGCGCGCGCGCGCGCGCGCGCGCGCGCGCGC
