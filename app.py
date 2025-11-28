@@ -87,7 +87,7 @@ def main():
     
     # Sidebar for file upload and options
     with st.sidebar:
-        st.header("📁 File Upload & Settings")
+        st.header("File Upload & Settings")
         
         # File uploader
         uploaded_file = st.file_uploader(
@@ -101,7 +101,7 @@ def main():
             temp_file = save_uploaded_file(uploaded_file)
             
             # Processing options
-            st.subheader("⚙️ Processing Options")
+            st.subheader("Processing Options")
             
             sanitize_mode = st.checkbox(
                 "Enable Sanitization Mode",
@@ -119,17 +119,17 @@ def main():
             )
             
             # Process button
-            if st.button("🚀 Process File", type="primary", use_container_width=True):
+            if st.button("Process File", type="primary", use_container_width=True):
                 with st.spinner("Processing sequences..."):
                     try:
                         process_sequences(temp_file, sanitize_mode, min_length)
-                        st.success("✅ Processing complete!")
+                        st.success("Processing complete!")
                     except Exception as e:
-                        st.error(f"❌ Error: {str(e)}")
+                        st.error(f"Error: {str(e)}")
         
         # Clear data button
         if st.session_state.validation_results:
-            if st.button("🗑️ Clear All Data", use_container_width=True):
+            if st.button("Clear All Data", use_container_width=True):
                 st.session_state.validation_results = []
                 st.session_state.sequences = []
                 st.session_state.processed_file = None
@@ -185,15 +185,15 @@ def display_welcome():
     
     with col2:
         st.markdown("""
-        ## Welcome to Genome Cleaner! 👋
+        ## Welcome to Genome Cleaner :)
         
         This professional tool helps you:
         
-        - ✅ **Validate** FASTA/FASTQ sequences
-        - 🧹 **Clean** invalid characters
-        - 📊 **Analyze** sequence statistics
-        - 📈 **Visualize** data distributions
-        - 📋 **Generate** comprehensive reports
+        - **Validate** FASTA/FASTQ sequences
+        - **Clean** invalid characters
+        - **Analyze** sequence statistics
+        - **Visualize** data distributions
+        - **Generate** comprehensive reports
         
         ### How to get started:
         1. Upload your sequence file using the sidebar
@@ -206,15 +206,15 @@ def display_welcome():
         - **FASTQ** (.fastq, .fq)
         
         ### Features:
-        - 🔍 Character validation and sanitization
-        - 📏 Length threshold filtering
-        - 🔄 Duplicate header detection
-        - 💾 Interactive visualizations
-        - 📊 Statistical analysis
-        - 💾 Export capabilities
+        - Character validation and sanitization
+        - Length threshold filtering
+        - Duplicate header detection
+        - Interactive visualizations
+        - Statistical analysis
+        - Export capabilities
         """)
         
-        st.info("💡 **Tip:** For best results, ensure your sequences contain only A, C, G, T, N characters.")
+        st.info("**Tip:** For best results, ensure your sequences contain only A, C, G, T, N characters.")
 
 
 def display_results():
@@ -224,10 +224,10 @@ def display_results():
     
     # Create tabs
     tab1, tab2, tab3, tab4 = st.tabs([
-        "📊 Summary", 
-        "🧹 Cleaning & Validation", 
-        "📈 Visualizations", 
-        "📋 Reports"
+        "Summary", 
+        "Cleaning & Validation", 
+        "Visualizations", 
+        "Reports"
     ])
     
     with tab1:
@@ -245,7 +245,7 @@ def display_results():
 
 def display_summary_tab(summary: Dict):
     """Display summary metrics."""
-    st.header("📊 Processing Summary")
+    st.header("Processing Summary")
     
     # Key metrics in columns
     col1, col2, col3, col4 = st.columns(4)
@@ -283,7 +283,7 @@ def display_summary_tab(summary: Dict):
     
     # Error breakdown
     if summary['error_types']:
-        st.subheader("🚨 Error Breakdown")
+        st.subheader("Error Breakdown")
         
         error_df = pd.DataFrame(
             list(summary['error_types'].items()),
@@ -310,7 +310,7 @@ def display_summary_tab(summary: Dict):
         st.plotly_chart(fig, use_container_width=True)
     
     # Quality distribution
-    st.subheader("🏆 Quality Distribution")
+    st.subheader("Quality Distribution")
     
     # Calculate quality distribution
     quality_dist = calculate_quality_distribution(st.session_state.validation_results)
@@ -345,7 +345,7 @@ def display_summary_tab(summary: Dict):
 
 def display_validation_tab():
     """Display detailed validation results table."""
-    st.header("🧹 Cleaning & Validation Results")
+    st.header("Cleaning & Validation Results")
     
     if not st.session_state.validation_results:
         st.warning("No validation results available.")
@@ -358,7 +358,7 @@ def display_validation_tab():
             'Index': result['sequence_index'],
             'Header': result['header'],
             'Length': result.get('original_length', 0),
-            'Status': '✅ Valid' if result['is_valid'] else '❌ Invalid',
+            'Status': 'Valid' if result['is_valid'] else 'Invalid',
             'Errors': '; '.join(result['errors']) if result['errors'] else 'None',
             'Warnings': '; '.join(result['warnings']) if result['warnings'] else 'None',
             'GC Content %': f"{calculate_gc_content(result.get('corrected_sequence', result.get('original_sequence', ''))):.2f}",
@@ -369,7 +369,7 @@ def display_validation_tab():
     df = pd.DataFrame(table_data)
     
     # Add filtering options
-    st.subheader("🔍 Filter and Search")
+    st.subheader("Filter and Search")
     
     col1, col2, col3 = st.columns(3)
     
@@ -439,7 +439,7 @@ def display_validation_tab():
     if not filtered_df.empty:
         csv_data = filtered_df.to_csv(index=False)
         st.download_button(
-            label="📥 Download Filtered Results (CSV)",
+            label="Download Filtered Results (CSV)",
             data=csv_data,
             file_name="validation_results.csv",
             mime="text/csv"
@@ -448,7 +448,7 @@ def display_validation_tab():
 
 def display_visualizations_tab():
     """Display interactive visualizations."""
-    st.header("📈 Sequence Visualizations")
+    st.header("Sequence Visualizations")
     
     if not st.session_state.validation_results:
         st.warning("No data available for visualization.")
@@ -510,7 +510,7 @@ def display_visualizations_tab():
         st.plotly_chart(fig_gc, use_container_width=True)
     
     # Scatter plot: Length vs GC Content
-    st.subheader("📊 Length vs GC Content Analysis")
+    st.subheader("Length vs GC Content Analysis")
     
     # Create scatter plot dataframe
     scatter_df = pd.DataFrame({
@@ -538,7 +538,7 @@ def display_visualizations_tab():
     st.plotly_chart(fig_scatter, use_container_width=True)
     
     # Box plot for GC content by length categories
-    st.subheader("📦 GC Content by Length Categories")
+    st.subheader("GC Content by Length Categories")
     
     # Create length categories
     scatter_df['Length Category'] = pd.cut(
@@ -565,24 +565,24 @@ def display_visualizations_tab():
 
 def display_reports_tab(summary: Dict):
     """Display and download reports."""
-    st.header("📋 Reports & Export")
+    st.header("Reports & Export")
     
     # Generate comprehensive report
-    if st.button("🔄 Generate Comprehensive Report"):
+    if st.button("Generate Comprehensive Report"):
         with st.spinner("Generating report..."):
             try:
                 report_data = generate_report(st.session_state.validation_results)
                 st.session_state.generated_report = report_data
-                st.success("✅ Report generated successfully!")
+                st.success("Report generated successfully!")
             except Exception as e:
-                st.error(f"❌ Error generating report: {str(e)}")
+                st.error(f"Error generating report: {str(e)}")
     
     # Display report if available
     if hasattr(st.session_state, 'generated_report'):
         report = st.session_state.generated_report
         
         # Report preview
-        st.subheader("📊 Report Preview")
+        st.subheader("Report Preview")
         
         col1, col2 = st.columns(2)
         
@@ -597,7 +597,7 @@ def display_reports_tab(summary: Dict):
             st.metric("Validity Rate", f"{report['summary']['validity_percentage']:.1f}%")
         
         # Download buttons
-        st.subheader("💾 Download Reports")
+        st.subheader("Download Reports")
         
         col1, col2 = st.columns(2)
         
@@ -605,7 +605,7 @@ def display_reports_tab(summary: Dict):
             # JSON report
             json_data = json.dumps(report, indent=2)
             st.download_button(
-                label="📄 Download JSON Report",
+                label="Download JSON Report",
                 data=json_data,
                 file_name="genome_cleaner_report.json",
                 mime="application/json"
@@ -613,32 +613,32 @@ def display_reports_tab(summary: Dict):
         
         with col2:
             # CSV report
-            if st.button("💾 Generate CSV Report"):
+            if st.button("Generate CSV Report"):
                 try:
                     csv_content = generate_csv_report(report)
                     st.download_button(
-                        label="📊 Download CSV Report", 
+                        label="Download CSV Report", 
                         data=csv_content,
                         file_name="genome_cleaner_report.csv",
                         mime="text/csv"
                     )
                 except Exception as e:
-                    st.error(f"❌ Error generating CSV: {str(e)}")
+                    st.error(f"Error generating CSV: {str(e)}")
     
     # Export cleaned sequences
-    st.subheader("🧹 Export Cleaned Sequences")
+    st.subheader("Export Cleaned Sequences")
     
-    if st.button("💾 Export Valid Sequences (FASTA)"):
+    if st.button("Export Valid Sequences (FASTA)"):
         try:
             fasta_content = generate_fasta_export(st.session_state.validation_results)
             st.download_button(
-                label="📁 Download Clean FASTA",
+                label="Download Clean FASTA",
                 data=fasta_content,
                 file_name="cleaned_sequences.fasta",
                 mime="text/plain"
             )
         except Exception as e:
-            st.error(f"❌ Error generating FASTA: {str(e)}")
+            st.error(f"Error generating FASTA: {str(e)}")
 
 
 def calculate_quality_distribution(validation_results: List[Dict]) -> Dict:
