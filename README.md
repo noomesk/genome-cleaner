@@ -2,7 +2,7 @@
 
 ![Genome Cleaner Logo](https://img.shields.io/badge/Genome-Cleaner-brightgreen?style=for-the-badge&logo=DNA)
 
-Esta es una aplicación profesional para limpieza y validación de secuencias FASTA/FASTQ desarrollada con Streamlit.
+Esta es una aplicación profesional para limpieza y validación de secuencias FASTA/FASTQ desarrollada con Streamlit .
 
 ## 📋 Descripción del Proyecto
 
