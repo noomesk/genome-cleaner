@@ -1,7 +1,7 @@
 """
 Genome Cleaner - Streamlit Web Application
 
-This is the main Streamlit application for cleaning and validating FASTA/FASTQ sequences.
+This is main Streamlit application for cleaning and validating FASTA/FASTQ sequences.
 It provides an interactive web interface with visualizations and reporting capabilities.
 
 Author: noomesk
@@ -34,44 +34,200 @@ st.set_page_config(
 def main():
     """Main Streamlit application."""
     
-    # Custom CSS for better styling
+    # --- ESTILO DARK (FALTA INTERACTIVIDAD Y ANIMACIONES)---
     st.markdown("""
     <style>
-    .main-header {
-        text-align: center;
-        padding: 2rem 0;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        margin: -1rem -1rem 2rem -1rem;
-        border-radius: 0 0 10px 10px;
-    }
-    .metric-container {
-        background: #f8f9fa;
-        padding: 1rem;
-        border-radius: 10px;
-        border: 1px solid #e9ecef;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 2px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        background-color: #f8f9fa;
-        border-radius: 5px 5px 0px 0px;
-        border: 1px solid #e9ecef;
-        padding: 10px 20px;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #667eea;
-        color: white;
-        border-color: #667eea;
-    }
+        /* --- PALETA Y TIPOGRAFÍA DE DARK THEME--- */
+        :root {
+            --bg-color: #010409; /* Fondo negro puro de GitHub/Render */
+            --surface-color: #0d1117; /* Gris oscuro para tarjetas */
+            --border-color: #21262d; /* Bordes más definidos */
+            --text-primary: #c9d1d9; /* Texto principal gris claro */
+            --text-secondary: #8b949e; /* Texto secundario más apagado */
+            --accent-color: #238636; /* Verde característico de GitHub/Render */
+            --accent-hover: #2ea043;
+        }
+
+        /* --- TIPOGRAFÍA INTER (JAJA INSP EN GITHUB/RENDER) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        html, body, .stApp {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main .block-container {
+            background-color: var(--surface-color);
+            padding: 2rem 3rem;
+            margin-top: 0;
+            border: 1px solid var(--border-color);
+            box-shadow: none;
+        }
+
+        /* --- SIDEBAR --- */
+        .stSidebar {
+            background-color: var(--surface-color);
+            border-right: 1px solid var(--border-color);
+        }
+        .stSidebar .block-container {
+            background-color: transparent;
+            padding: 1rem 1.5rem;
+        }
+
+        /* --- TÍTULOS Y TEXTO --- */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.25;
+        }
+        
+        h1 { font-size: 2.5rem; font-weight: 700; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        
+        p, li, div[data-testid="stMarkdownContainer"] > p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        strong, b {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* --- MÉTRICAS --- */
+        div[data-testid="metric-container"] {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+        }
+        label[data-testid="stMetricLabel"] {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        div[data-testid="stMetricValue"] {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        /* --- TABS --- */
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stTabs [data-baseweb="tab"] {
+            background-color: transparent;
+            padding: 12px 20px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .stTabs [aria-selected="true"] {
+            color: var(--text-primary);
+            background-color: var(--bg-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        /* --- BOTONES --- */
+        .stButton > button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease-in-out;
+        }
+        .stButton > button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        /* --- DATAFRAMES --- */
+        .stDataFrame {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+        
+        /* --- EXPANDERS --- */
+        .streamlit-expanderHeader {
+            background-color: var(--bg-color);
+            font-weight: 600;
+        }
+        
+        /* --- INFO/ÉXITO/ADVERTENCIA --- */
+        .stInfo {
+            background-color: rgba(56, 139, 253, 0.1);
+            border: 1px solid rgba(56, 139, 253, 0.3);
+            color: var(--text-primary);
+        }
+        .stSuccess {
+            background-color: rgba(35, 134, 54, 0.1);
+            border: 1px solid rgba(35, 134, 54, 0.3);
+            color: var(--text-primary);
+        }
+        .stWarning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: var(--text-primary);
+        }
+
+        /* --- OCULTAR ELEMENTOS DE STREAMLIT --- */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        
+        /* --- HEADER PERSONALIZADO --- */
+        .custom-header {
+            text-align: center;
+            padding: 3rem 0;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            margin: 0 -3rem 0 -3rem;
+        }
+        .custom-header h1 {
+            color: var(--text-primary);
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .custom-header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin: 0.5rem 0 0 0;
+        }
+        
+        /* --- ESTILOS PARA LA PÁGINA DE BIENVENIDA --- */
+        .welcome-feature {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .welcome-feature:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .welcome-feature h3 {
+            margin-top: 0;
+            color: var(--text-primary);
+        }
+
     </style>
     """, unsafe_allow_html=True)
+    # --- FIN DEL BLOQUE DE ESTILO ---
     
-    # Header
+    # Header personalizado
     st.markdown("""
-    <div class="main-header">
+    <div class="custom-header">
         <h1>🧬 Genome Cleaner</h1>
         <p>Professional FASTA/FASTQ Sequence Cleaning and Validation Tool</p>
     </div>
@@ -180,41 +336,65 @@ def process_sequences(file_path: str, sanitize: bool, min_length: int):
 
 
 def display_welcome():
-    """Display welcome screen when no data is loaded."""
-    col1, col2, col3 = st.columns([1, 2, 1])
+    """Display welcome screen with a full-width, balanced layout."""
+    st.markdown("---") # Separador
     
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div class="welcome-feature">
+            <h3>Validate</h3>
+            <p>Ensure your FASTA/FASTQ sequences adhere to standard formats and detect any structural errors.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
     with col2:
         st.markdown("""
-        ## Welcome to Genome Cleaner :)
+        <div class="welcome-feature">
+            <h3>Clean</h3>
+            <p>Automatically sanitize invalid characters and prepare your data for downstream analysis.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("""
+        <div class="welcome-feature">
+            <h3>Analyze</h3>
+            <p>Generate comprehensive statistics on sequence length, GC content, and more.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("---") # Separador
+
+    col4, col5 = st.columns(2)
+    
+    with col4:
+        st.markdown("""
+        <div class="welcome-feature">
+            <h3>Visualize</h3>
+            <p>Create interactive charts and plots to understand the distribution and quality of your data.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
-        This professional tool helps you:
-        
-        - **Validate** FASTA/FASTQ sequences
-        - **Clean** invalid characters
-        - **Analyze** sequence statistics
-        - **Visualize** data distributions
-        - **Generate** comprehensive reports
-        
-        ### How to get started:
-        1. Upload your sequence file using the sidebar
-        2. Configure processing options
-        3. Click "Process File" to begin analysis
-        4. Explore results in the tabs below
-        
-        ### Supported formats:
-        - **FASTA** (.fasta, .fa)
-        - **FASTQ** (.fastq, .fq)
-        
-        ### Features:
-        - Character validation and sanitization
-        - Length threshold filtering
-        - Duplicate header detection
-        - Interactive visualizations
-        - Statistical analysis
-        - Export capabilities
-        """)
-        
-        st.info("**Tip:** For best results, ensure your sequences contain only A, C, G, T, N characters.")
+    with col5:
+        st.markdown("""
+        <div class="welcome-feature">
+            <h3>Export</h3>
+            <p>Download your cleaned sequences and detailed reports in various formats (FASTA, CSV, JSON).</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("---") # Separador
+
+    st.markdown("""
+    <div style="text-align: center; padding: 2rem 0;">
+        <h2>Ready to get started?</h2>
+        <p style="font-size: 1.1rem; color: var(--text-secondary);">
+            Upload your file in the sidebar and click "Process File" to begin the analysis.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 def display_results():
