@@ -275,5 +275,6 @@ def get_validation_summary(validation_results: List[Dict]) -> Dict:
         "duplicate_headers": duplicate_headers,
         "total_errors": len(all_errors),
         "error_types": dict(error_type_counts),
-        "validity_percentage": (valid / total) * 100 if total > 0 else 0
+        "validity_percentage": (valid / total) * 100 if total > 0 else 0,
+        "sanitization_rate": (sanitized / total) * 100 if total > 0 else 0
     }

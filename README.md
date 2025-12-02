@@ -18,7 +18,7 @@ Genome Cleaner es una herramienta integral diseñada para bioinformáticos que n
 - **Exportación Múltiple**: Descarga de informes en CSV y JSON
 - **Línea de Comandos**: CLI completa para automatización de procesos
 
-## Instalacióoooooon
+## Instalación
 
 ### Prerrequisitos
 
@@ -144,7 +144,7 @@ pytest tests/test_parser.py
 pytest tests/test_validator.py
 pytest tests/test_stats.py
 
-# Con cobertura de códigooo
+# Con cobertura de código
 pytest --cov=src tests/
 ```
 
