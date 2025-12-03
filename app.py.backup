@@ -25,7 +25,7 @@ from src.stats import generate_report, save_report
 # Configure Streamlit page
 st.set_page_config(
     page_title="Genome Cleaner",
-    page_icon="DNA",
+    page_icon="🧬",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -34,23 +34,23 @@ st.set_page_config(
 def main():
     """Main Streamlit application."""
     
-    # --- MODERN DARK THEME WITH ANIMATIONS ---
+    # --- MODERN DARK THEME (RENDER.COM INSPIRED) ---
     st.html("""
     <style>
         /* --- VARIABLES --- */
         :root {
             --bg-color: #000000;
-            --surface-color: #09090b;
-            --border-color: #27272a;
-            --text-primary: #f4f4f5;
-            --text-secondary: #a1a1aa;
-            --accent-primary: #7c3aed;
+            --surface-color: #09090b; /* Zinc-950 */
+            --border-color: #27272a; /* Zinc-800 */
+            --text-primary: #f4f4f5; /* Zinc-100 */
+            --text-secondary: #a1a1aa; /* Zinc-400 */
+            --accent-primary: #7c3aed; /* Violet-600 */
             --accent-glow: rgba(124, 58, 237, 0.5);
-            --success-color: #10b981;
+            --success-color: #10b981; /* Emerald-500 */
             --card-bg: #111113;
         }
 
-        /* --- TYPOGRAPHY --- */
+        /* --- GLOBAL RESET & TYPOGRAPHY --- */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
         html, body, .stApp {
@@ -95,62 +95,19 @@ def main():
             font-weight: 700;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- CUSTOM HERO ANIMATIONS --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        @keyframes drawLine {
-            0% { stroke-dashoffset: 1000; opacity: 0.2; }
-            50% { opacity: 0.6; }
-            100% { stroke-dashoffset: 0; opacity: 0.3; }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-        
-        @keyframes shine {
-            0% { background-position: 200% center; }
-            100% { background-position: -200% center; }
-        }
 
-        /* --- HERO SECTION --- */
-        .hero-wrapper {
-            position: relative;
-            width: 100%;
-            min-height: 80vh;
-            overflow: hidden;
-        }
-        
-        .animated-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.15;
-        }
-        
-        .animated-bg line {
-            stroke: var(--accent-primary);
-            stroke-width: 1;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: drawLine 6s ease-in-out infinite;
-        }
-        
-        .animated-bg circle {
-            fill: var(--success-color);
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
         .hero-container {
-            position: relative;
-            z-index: 1;
             text-align: center;
             padding: 4rem 1rem;
             animation: fadeIn 0.8s ease-out;
@@ -159,21 +116,9 @@ def main():
         .hero-title {
             font-size: 3.5rem;
             font-weight: 800;
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.3) 30%,
-                rgba(255, 255, 255, 0.6) 45%,
-                #ffffff 50%,
-                rgba(255, 255, 255, 0.6) 55%,
-                rgba(255, 255, 255, 0.3) 70%,
-                rgba(255, 255, 255, 0.1) 100%
-            );
-            background-size: 200% auto;
+            background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shine 5s linear infinite;
             margin-bottom: 1rem;
             letter-spacing: -0.05em;
         }
@@ -208,6 +153,13 @@ def main():
             transform: translateY(-5px);
         }
         
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: float 6s ease-in-out infinite;
+        }
+        
         .feature-title {
             font-weight: 600;
             color: var(--text-primary);
@@ -238,7 +190,7 @@ def main():
 
     # Sidebar for file upload and options
     with st.sidebar:
-        st.markdown("### Genome Cleaner")
+        st.markdown("### 🧬 Genome Cleaner")
         st.markdown("---")
         
         uploaded_file = st.file_uploader(
@@ -247,7 +199,7 @@ def main():
             help="Supported formats: FASTA, FASTQ"
         )
         
-        st.markdown("### Settings")
+        st.markdown("### ⚙️ Settings")
         
         min_length = st.slider(
             "Minimum Sequence Length",
@@ -266,7 +218,7 @@ def main():
         st.markdown("---")
         
         if uploaded_file:
-            process_btn = st.button("Process File", use_container_width=True)
+            process_btn = st.button("⚡ Process File", use_container_width=True)
             
             if process_btn:
                 try:
@@ -339,67 +291,51 @@ def process_sequences(file_path: str, sanitize: bool, min_length: int):
 
 
 def display_hero():
-    """Display the modern interactive hero section with animated background."""
+    """Display the modern interactive hero section."""
     st.html("""
-    <div class="hero-wrapper">
-        <svg class="anim ated-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-            <!-- Animated lines -->
-            <line x1="0" y1="200" x2="600" y2="200" style="animation-delay: 0s" />
-            <line x1="600" y1="200" x2="600" y2="400" style="animation-delay: 0.5s" />
-            <line x1="1920" y1="300" x2="1320" y2="300" style="animation-delay: 1s" />
-            <line x1="1320" y1="300" x2="1320" y2="600" style="animation-delay: 1.5s" />
-            <line x1="300" y1="800" x2="900" y2="800" style="animation-delay: 2s" />
-            <line x1="960" y1="0" x2="960" y2="400" style="animation-delay: 2.5s" />
-            
-            <!-- Node points -->
-            <circle cx="600" cy="200" r="3" style="animation-delay: 0s" />
-            <circle cx="600" cy="400" r="3" style="animation-delay: 0.5s" />
-            <circle cx="1320" cy="300" r="3" style="animation-delay: 1s" />
-            <circle cx="1320" cy="600" r="3" style="animation-delay:1.5s" />
-            <circle cx="300" cy="800" r="3" style="animation-delay: 2s" />
-            <circle cx="960" cy="400" r="3" style="animation-delay: 2.5s" />
-        </svg>
+    <div class="hero-container">
+        <h1 class="hero-title">Genome Cleaner</h1>
+        <p class="hero-subtitle">
+            Professional-grade sequence validation and cleaning for modern bioinformatics. 
+            Fast, secure, and reproducible.
+        </p>
         
-        <div class="hero-container">
-            <h1 class="hero-title">Genome Cleaner</h1>
-            <p class="hero-subtitle">
-                Professional-grade sequence validation and cleaning for modern bioinformatics. 
-                Fast, secure, and reproducible.
-            </p>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-title">Lightning Fast</div>
-                    <div class="feature-desc">
-                        Optimized parsing engine capable of handling large FASTA/FASTQ datasets in seconds.
-                    </div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-title">Smart Validation</div>
-                    <div class="feature-desc">
-                        Automatic detection of format errors, duplicates, and low-complexity sequences.
-                    </div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-title">Visual Analytics</div>
-                    <div class="feature-desc">
-                        Interactive Plotly charts for quality distribution and GC content analysis.
-                    </div>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-title">Auto-Sanitization</div>
-                    <div class="feature-desc">
-                        Intelligent cleaning algorithms to standardize your data for downstream analysis.
-                    </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <div class="feature-title">Lightning Fast</div>
+                <div class="feature-desc">
+                    Optimized parsing engine capable of handling large FASTA/FASTQ datasets in seconds.
                 </div>
             </div>
             
-            <div style="margin-top: 3rem; opacity: 0.7; font-size: 0.9rem;">
-                Upload your file in the sidebar to get started
+            <div class="feature-card">
+                <span class="feature-icon">🛡️</span>
+                <div class="feature-title">Smart Validation</div>
+                <div class="feature-desc">
+                    Automatic detection of format errors, duplicates, and low-complexity sequences.
+                </div>
             </div>
+            
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <div class="feature-title">Visual Analytics</div>
+                <div class="feature-desc">
+                    Interactive Plotly charts for quality distribution and GC content analysis.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <span class="feature-icon">🧹</span>
+                <div class="feature-title">Auto-Sanitization</div>
+                <div class="feature-desc">
+                    Intelligent cleaning algorithms to standardize your data for downstream analysis.
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 3rem; opacity: 0.7; font-size: 0.9rem;">
+            👈 Upload your file in the sidebar to get started
         </div>
     </div>
     """)
