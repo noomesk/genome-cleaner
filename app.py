@@ -34,7 +34,7 @@ st.set_page_config(
 def main():
     """Main Streamlit application."""
     
-    # --- MODERN DARK THEME WITH ANIMATIONS ---
+    # --- MODERN DARK THEME WITH DNA ANIMATION ---
     st.html("""
     <style>
         /* --- VARIABLES --- */
@@ -101,21 +101,63 @@ def main():
             to { opacity: 1; transform: translateY(0); }
         }
         
-        @keyframes drawLine {
-            0% { stroke-dashoffset: 1000; opacity: 0.2; }
-            50% { opacity: 0.6; }
-            100% { stroke-dashoffset: 0; opacity: 0.3; }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-        
         @keyframes shine {
             0% { background-position: 200% center; }
             100% { background-position: -200% center; }
         }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* --- DNA BACKGROUND --- */
+        .dna-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            opacity: 0.15;
+        }
+        
+        .dna-strand {
+            position: absolute;
+            width: 4px;
+            height: 200px;
+            background: linear-gradient(to bottom, 
+                var(--accent-primary) 0%, 
+                var(--success-color) 50%, 
+                var(--accent-primary) 100%);
+            border-radius: 4px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .dna-strand:nth-child(1) { left: 10%; top: 10%; animation-delay: 0s; }
+        .dna-strand:nth-child(2) { left: 30%; top: 60%; animation-delay: 1s; }
+        .dna-strand:nth-child(3) { left: 50%; top: 30%; animation-delay: 2s; }
+        .dna-strand:nth-child(4) { left: 70%; top: 70%; animation-delay: 3s; }
+        .dna-strand:nth-child(5) { left: 90%; top: 20%; animation-delay: 4s; }
+        
+        .dna-helix {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .dna-helix:nth-child(6) { left: 20%; top: 40%; animation-delay: 0.5s; }
+        .dna-helix:nth-child(7) { left: 60%; top: 50%; animation-delay: 1.5s; }
+        .dna-helix:nth-child(8) { left: 80%; top: 15%; animation-delay: 2.5s; }
 
         /* --- HERO SECTION --- */
         .hero-wrapper {
@@ -123,29 +165,6 @@ def main():
             width: 100%;
             min-height: 80vh;
             overflow: hidden;
-        }
-        
-        .animated-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.15;
-        }
-        
-        .animated-bg line {
-            stroke: var(--accent-primary);
-            stroke-width: 1;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: drawLine 6s ease-in-out infinite;
-        }
-        
-        .animated-bg circle {
-            fill: var(--success-color);
-            animation: pulse 3s ease-in-out infinite;
         }
         
         .hero-container {
@@ -339,26 +358,19 @@ def process_sequences(file_path: str, sanitize: bool, min_length: int):
 
 
 def display_hero():
-    """Display the modern interactive hero section with animated background."""
+    """Display the modern interactive hero section with DNA background animation."""
     st.html("""
     <div class="hero-wrapper">
-        <svg class="anim ated-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-            <!-- Animated lines -->
-            <line x1="0" y1="200" x2="600" y2="200" style="animation-delay: 0s" />
-            <line x1="600" y1="200" x2="600" y2="400" style="animation-delay: 0.5s" />
-            <line x1="1920" y1="300" x2="1320" y2="300" style="animation-delay: 1s" />
-            <line x1="1320" y1="300" x2="1320" y2="600" style="animation-delay: 1.5s" />
-            <line x1="300" y1="800" x2="900" y2="800" style="animation-delay: 2s" />
-            <line x1="960" y1="0" x2="960" y2="400" style="animation-delay: 2.5s" />
-            
-            <!-- Node points -->
-            <circle cx="600" cy="200" r="3" style="animation-delay: 0s" />
-            <circle cx="600" cy="400" r="3" style="animation-delay: 0.5s" />
-            <circle cx="1320" cy="300" r="3" style="animation-delay: 1s" />
-            <circle cx="1320" cy="600" r="3" style="animation-delay:1.5s" />
-            <circle cx="300" cy="800" r="3" style="animation-delay: 2s" />
-            <circle cx="960" cy="400" r="3" style="animation-delay: 2.5s" />
-        </svg>
+        <div class="dna-background">
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+            <div class="dna-helix"></div>
+            <div class="dna-helix"></div>
+            <div class="dna-helix"></div>
+        </div>
         
         <div class="hero-container">
             <h1 class="hero-title">Genome Cleaner</h1>
