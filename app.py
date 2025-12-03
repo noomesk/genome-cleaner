@@ -242,7 +242,25 @@ def main():
         /* Hide default Streamlit elements */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
-        /* header {visibility: hidden;} */
+        
+        /* Completely remove toolbar and decoration */
+        [data-testid="stToolbar"] {
+            display: none !important;
+        }
+        [data-testid="stDecoration"] {
+            display: none !important;
+        }
+        
+        /* Make header transparent and non-blocking */
+        header[data-testid="stHeader"] {
+            background: transparent !important;
+            pointer-events: none !important;
+        }
+        
+        /* Re-enable clicks only for sidebar toggle */
+        header[data-testid="stHeader"] button {
+            pointer-events: auto !important;
+        }
         
     </style>
     """)
