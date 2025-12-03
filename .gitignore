@@ -13,3 +13,6 @@ Thumbs.db
 
 # Archivos de entorno (x si llego a usar claves, etc.)
 .env 
+
+# Temporary files
+temp/
