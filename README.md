@@ -1,4 +1,4 @@
-# Genome Cleaner
+# Genome Cleaner. 
 
 ![Genome Cleaner Logo](https://img.shields.io/badge/Genome-Cleaner-brightgreen?style=for-the-badge&logo=DNA)
 
